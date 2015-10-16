@@ -9,10 +9,10 @@ from apis.models import Questions, User, Response
 
 def get_question_data(request):
     data = request.GET
-    question = Questions.objects.filter(question_id=data['question_id'])[0]
     response = Response.objects.filter(question_id=data['question_id'])[0]
-    return_data = dict(zip(question.options, response.options))
-    response = HttpResponse(json.dumps(return_data))
+    response = {'question_id': response.question_id,
+                'options': json.loads(response.options)}
+    response = HttpResponse(json.dumps(response))
     return response
 
 
@@ -25,7 +25,7 @@ def get_questions_panel(request):
                                 'profile': json.loads(question.profile),
                                 'options': question.options
                                 } 
-        for question in Questions.objects.filter(owner_id=data['owner_id'])]
+        for question in Questions.objects.filter(owner_id=data["owner_id"])]
     response = HttpResponse(json.dumps(questions_list))
     return response
 
@@ -44,6 +44,9 @@ def push_question(request):
                         options=data.getlist('options')
                         )
     question.save()
+    option_clicks = {option: 0 for option in data.getlist('options')}
+    response = Response(question_id=question_id, options=json.dumps(option_clicks))
+    response.save()
     response = HttpResponse(json.dumps({
                             'status': 'success',
                             'data': data}),
@@ -67,54 +70,20 @@ def fetch_user_profile(request):
     return response
 
 
-def get_questions_extension(request):
-    data = request.GET
-    uid = data['email_id']
-    
-    questions = [{'question': 'GOT rocks?',
-        'template_id': 4,
-        'options': ['agree', 'disagree'],
-        'question_id': 10},
-        {'question': 'Friends rocks?',
-        'template_id': 4,
-        'options': ['agree', 'disagree'],
-        'question_id': 11},
-        {'question': 'Seinfeld rocks?',
-        'template_id': 4,
-        'options': ['agree', 'disagree'],
-        'question_id': 12},
-        {'question': 'House of cards rocks?',
-        'template_id': 4,
-        'options': ['agree', 'disagree'],
-        'question_id': 13},
-        {'question': 'Deathnote rocks?',
-        'template_id': 4,
-        'options': ['agree', 'disagree'],
-        'question_id': 14}
-    ]
-    response = HttpResponse(json.dumps(questions))
-    return response
-
-
 @csrf_exempt
-def get_response(request):
+def send_response(request):
     data = request.POST
-    print data, '1'
-    # import ipdb
-    # ipdb.set_trace()
-    response = HttpResponse(json.dumps({
+    options_selected = data.getlist('options')
+    response = Response.objects.filter(question_id=data['question_id'])[0]
+    response_options = json.loads(response.options)
+    response.delete()
+    for option in options_selected:
+        response_options[option] = 1+response_options[option]
+    response = Response(question_id=data['question_id'], options=json.dumps(response_options))
+    response.save()
+    return_data = HttpResponse(json.dumps({
             'status': 'success',
             'data': data
         }), content_type='application/json')
-    print data, '2'
-    response['Access-Control-Allow-Origin'] = '*'
-    return response    
-
-def get_templates(request):
-    data = request.GET
-    templates = {'yolo': 'template_list'}
-    response = HttpResponse(json.dumps(templates))
-    return response
-
-# def post_questions_from_panel(request):
-#   data = request.POST
+    return_data['Access-Control-Allow-Origin'] = '*'
+    return return_data
