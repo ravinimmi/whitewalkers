@@ -1,4 +1,5 @@
 from django.db import models
+# from django.contrib.postgres.fields import ArrayField
 
 
 class Questions(models.Model):
@@ -18,6 +19,7 @@ class User(models.Model):
     user_id = models.TextField()
     age = models.TextField()
     gender = models.TextField()
+    # questions_asked = ArrayField(models.TextField(), size=5)
 
 class Response(models.Model):
     question_id = models.TextField()
