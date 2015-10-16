@@ -25,8 +25,4 @@ class User(models.Model):
 
 class Response(models.Model):
     question_id = models.TextField()
-    option_1 = models.TextField()
-    option_2 = models.TextField()
-    option_3 = models.TextField()
-    option_4 = models.TextField()
-    option_5 = models.TextField()
+    options = ArrayField(models.TextField(), size=5, default=[])

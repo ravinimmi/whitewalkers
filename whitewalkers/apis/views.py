@@ -10,14 +10,9 @@ from .models import Questions, User, Response
 
 def get_question_data(request):
     data = request.GET
-    row = Response.objects.filter(question_id=data['question_id'])
-    question = Questions.objects.filter(question_id=data['question_id'])
-    return_data = { question['option_1']: row['option_1'],
-                    question['option_2']: row['option_2'],
-                    question['option_3']: row['option_3'],
-                    question['option_4']: row['option_4'],
-                    question['option_5']: row['option_5']
-                    }
+    question = Questions.objects.filter(question_id=data['question_id'])[0]
+    response = Response.objects.filter(question_id=data['question_id'])[0]
+    return_data = dict(zip(question.options, response.options))
     response = HttpResponse(json.dumps(return_data))
     return response
 
