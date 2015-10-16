@@ -6,8 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from apis.models import Questions, User, Response
 
-from .models import Questions, User, Response
-
 
 def get_question_data(request):
     data = request.GET
@@ -17,13 +15,14 @@ def get_question_data(request):
     response = HttpResponse(json.dumps(return_data))
     return response
 
+
 def get_questions_panel(request):
     data = request.GET
     questions_list = [{ 'question_id': question.question_id,
                                 'question_text': question.question_text,
                                 'template_type': question.template_type,
                                 'owner_id': question.owner_id,
-                                'profile': question.profile,
+                                'profile': json.loads(question.profile),
                                 'options': question.options
                                 } 
         for question in Questions.objects.filter(owner_id=data['owner_id'])]
@@ -35,9 +34,9 @@ def push_question(request):
     data = request.POST
     options = data.getlist('options')
     try:
-    	question_id = 1+Questions.objects.latest('id').id
+        question_id = 1+Questions.objects.latest('id').id
     except:
-    	question_id = 1
+        question_id = 1
     question = Questions(question_id=question_id,
                         question_text=data['question_text'],
                         template_type=data['template_type'],
@@ -47,9 +46,9 @@ def push_question(request):
                         )
     question.save()
     response = HttpResponse(json.dumps({
-            				'status': 'success',
-				            'data': data}),
-				             content_type='application/json')
+                            'status': 'success',
+                            'data': data}),
+                             content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -63,39 +62,39 @@ def fetch_user_profile(request):
     user.save()
     response = HttpResponse(json.dumps({
                            'status': 'success',
-            				'data': data}),
-        					 content_type='application/json')
+                            'data': data}),
+                             content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
 
 def get_questions_extension(request):
-	data = request.GET
-	uid = data['email_id']
-	
-	questions = [{'question': 'GOT rocks?',
-		'template_id': 4,
-		'options': ['agree', 'disagree'],
-		'question_id': 10},
-		{'question': 'Friends rocks?',
-		'template_id': 4,
-		'options': ['agree', 'disagree'],
-		'question_id': 11},
-		{'question': 'Seinfeld rocks?',
-		'template_id': 4,
-		'options': ['agree', 'disagree'],
-		'question_id': 12},
-		{'question': 'House of cards rocks?',
-		'template_id': 4,
-		'options': ['agree', 'disagree'],
-		'question_id': 13},
-		{'question': 'Deathnote rocks?',
-		'template_id': 4,
-		'options': ['agree', 'disagree'],
-		'question_id': 14}
-	]
-	response = HttpResponse(json.dumps(questions))
-	return response
+    data = request.GET
+    uid = data['email_id']
+    
+    questions = [{'question': 'GOT rocks?',
+        'template_id': 4,
+        'options': ['agree', 'disagree'],
+        'question_id': 10},
+        {'question': 'Friends rocks?',
+        'template_id': 4,
+        'options': ['agree', 'disagree'],
+        'question_id': 11},
+        {'question': 'Seinfeld rocks?',
+        'template_id': 4,
+        'options': ['agree', 'disagree'],
+        'question_id': 12},
+        {'question': 'House of cards rocks?',
+        'template_id': 4,
+        'options': ['agree', 'disagree'],
+        'question_id': 13},
+        {'question': 'Deathnote rocks?',
+        'template_id': 4,
+        'options': ['agree', 'disagree'],
+        'question_id': 14}
+    ]
+    response = HttpResponse(json.dumps(questions))
+    return response
 
 
 @csrf_exempt

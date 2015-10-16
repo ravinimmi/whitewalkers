@@ -9,11 +9,6 @@ class Questions(models.Model):
     owner_id = models.TextField()
     profile = models.TextField()
     options = ArrayField(models.TextField(), size=5, default=[])
-    # option_1 = models.TextField()
-    # option_2 = models.TextField()
-    # option_3 = models.TextField()
-    # option_4 = models.TextField()
-    # option_5 = models.TextField()
 
 
 class User(models.Model):
