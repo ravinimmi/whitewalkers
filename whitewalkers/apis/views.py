@@ -5,31 +5,16 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-<<<<<<< HEAD
 from .models import Questions, User
 
-from django.views.decorators.csrf import csrf_exempt
-
-
-@csrf_exempt
-def fetch_user_profile(request):
-    data = request.POST
-    # user_id = data['user_id']
-    # age = data['age']
-    # gender = data['gender']
-    # user = User(user_id=user_id, gender=gender, age=age)
-    # user.save()
-    print data
-    response = HttpResponse(json.dumps(data))
-    return response
 
 def get_questions(request):
     data = request.GET
     # uid = data['uid']
-    if 'age' in data:
-        age = data['age']
-    if 'gender' in data:
-        gender = data['gender']
+    # if 'age' in data:
+    #     age = data['age']
+    # if 'gender' in data:
+    #     gender = data['gender']
     #questions = mongo_query(age, gender)
     questions = {'lol':'cool_question'}
     response = HttpResponse(json.dumps(questions))
@@ -55,7 +40,7 @@ def send_questions(request):
     # output = [p.question_text for p in question_objects_list]
     response = HttpResponse(json.dumps(questions_list))
     return response
-=======
+
 @csrf_exempt
 def fetch_user_profile(request):
 	data = request.POST
@@ -97,7 +82,6 @@ def get_questions(request):
 	]
 	response = HttpResponse(json.dumps(questions))
 	return response
->>>>>>> 8be42c3153b5e5612526b79b938677e3066ddb29
 
 @csrf_exempt
 def get_response(request):

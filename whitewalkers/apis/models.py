@@ -19,9 +19,7 @@ class User(models.Model):
     user_id = models.TextField()
     age = models.TextField()
     gender = models.TextField()
-<<<<<<< HEAD
-    questions_asked = ArrayField(models.TextField(), size=5)
-=======
+    # questions_asked = ArrayField(models.TextField(), size=5)
 
 class Response(models.Model):
     question_id = models.TextField()
@@ -30,4 +28,3 @@ class Response(models.Model):
     option_3 = models.TextField()
     option_4 = models.TextField()
     option_5 = models.TextField()
->>>>>>> 8be42c3153b5e5612526b79b938677e3066ddb29
