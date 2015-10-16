@@ -20,8 +20,9 @@ from apis import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^fetch_user_profile$', views.fetch_user_profile, name = 'get_user_profile'),
-    url(r'^get_questions$', views.get_questions, name = 'get_questions'),
+    url(r'^fetch_user_profile$', views.fetch_user_profile, name = 'fetch_user_profile'),
+    url(r'^post_questions$', views.post_questions, name = 'post_questions'),
+    url(r'^get_questions_extensions$', views.get_questions_extensions, name = 'get_questions_extensions'),
     url(r'^get_templates$', views.get_templates, name = 'get_templates'),
     url(r'^get_response$', views.get_response, name = 'get_response')
 ]
