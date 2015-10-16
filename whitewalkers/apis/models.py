@@ -10,10 +10,9 @@ class Questions(models.Model):
 
 class User(models.Model):
 	user_id = models.CharField()
-	question_list = models.ListField()
+	question_list = ListField()
 	profile = models.TextField()
 
 class Template(models.Model):
 	template_id = models.CharField()
 	template_type = models.TextField()
-
