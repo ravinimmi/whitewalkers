@@ -10,19 +10,14 @@ import requests
 from .models import Questions, User, Response
 from django.core import serializers
 
-
 def get_question_data(request):
     data = request.GET
-    row = Response.objects.filter(question_id=data['question_id'])
-    question = Questions.objects.filter(question_id=data['question_id'])
-    return_data = { question['option_1']: row['option_1'],
-                    question['option_2']: row['option_2'],
-                    question['option_3']: row['option_3'],
-                    question['option_4']: row['option_4'],
-                    question['option_5']: row['option_5']
-                    }
+    question = Questions.objects.filter(question_id=data['question_id'])[0]
+    response = Response.objects.filter(question_id=data['question_id'])[0]
+    return_data = dict(zip(question.options, response.options))
     response = HttpResponse(json.dumps(return_data))
     return response
+
 
 def get_questions_panel(request):
     data = request.GET
@@ -30,7 +25,7 @@ def get_questions_panel(request):
                                 'question_text': question.question_text,
                                 'template_type': question.template_type,
                                 'owner_id': question.owner_id,
-                                'profile': question.profile,
+                                'profile': json.loads(question.profile),
                                 'options': question.options
                                 } 
         for question in Questions.objects.filter(owner_id=data['owner_id'])]
@@ -40,23 +35,22 @@ def get_questions_panel(request):
 @csrf_exempt
 def push_question(request):
     data = request.POST
-    options = data.getlist('options')
     try:
-    	question_id = 1+Questions.objects.latest('id').id
+        question_id = 1+Questions.objects.latest('id').id
     except:
-    	question_id = 1
+        question_id = 1
     question = Questions(question_id=question_id,
                         question_text=data['question_text'],
                         template_type=data['template_type'],
                         owner_id=data['owner_id'],
                         profile=data['profile'],
-                        options=options
+                        options=data.getlist('options')
                         )
     question.save()
     response = HttpResponse(json.dumps({
-            				'status': 'success',
-				            'data': data}),
-				             content_type='application/json')
+                            'status': 'success',
+                            'data': data}),
+                             content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -72,8 +66,8 @@ def fetch_user_profile(request):
     user.save()
     response = HttpResponse(json.dumps({
                            'status': 'success',
-            				'data': data}),
-        					 content_type='application/json')
+                            'data': data}),
+                             content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -110,27 +104,6 @@ def get_questions_extension(request):
 			suggested_questions.append(question)
 	response = HttpResponse(json.dumps(suggested_questions))
 	return response
-	# questions = [{'question': 'GOT rocks?',
-	# 	'template_id': 4,
-	# 	'options': ['agree', 'disagree'],
-	# 	'question_id': 10},
-	# 	{'question': 'Friends rocks?',
-	# 	'template_id': 4,
-	# 	'options': ['agree', 'disagree'],
-	# 	'question_id': 11},
-	# 	{'question': 'Seinfeld rocks?',
-	# 	'template_id': 4,
-	# 	'options': ['agree', 'disagree'],
-	# 	'question_id': 12},
-	# 	{'question': 'House of cards rocks?',
-	# 	'template_id': 4,
-	# 	'options': ['agree', 'disagree'],
-	# 	'question_id': 13},
-	# 	{'question': 'Deathnote rocks?',
-	# 	'template_id': 4,
-	# 	'options': ['agree', 'disagree'],
-	# 	'question_id': 14}
-	# ]
 
 @csrf_exempt
 def get_response(request):
