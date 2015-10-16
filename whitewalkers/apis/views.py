@@ -2,8 +2,10 @@
 # Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 import json
 
+<<<<<<< HEAD
 from .models import Questions, User
 
 from django.views.decorators.csrf import csrf_exempt
@@ -53,6 +55,64 @@ def send_questions(request):
     # output = [p.question_text for p in question_objects_list]
     response = HttpResponse(json.dumps(questions_list))
     return response
+=======
+@csrf_exempt
+def fetch_user_profile(request):
+	data = request.POST
+	#uid = data['email_id']
+	# query_output  = mongo_query('uid')
+	response = HttpResponse(json.dumps({
+            'status': 'success',
+            'data': data
+        }), content_type='application/json')
+	print data, '2'
+	response['Access-Control-Allow-Origin'] = '*'
+	return response
+	
+
+def get_questions(request):
+	data = request.GET
+	uid = data['email_id']
+	#questions = mongo_query(age, gender)
+	questions = [{'question': 'GOT rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 10},
+		{'question': 'Friends rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 11},
+		{'question': 'Seinfeld rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 12},
+		{'question': 'House of cards rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 13},
+		{'question': 'Deathnote rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 14}
+	]
+	response = HttpResponse(json.dumps(questions))
+	return response
+>>>>>>> 8be42c3153b5e5612526b79b938677e3066ddb29
+
+@csrf_exempt
+def get_response(request):
+	data = request.POST
+	print data, '1'
+	# import ipdb
+	# ipdb.set_trace()
+	response = HttpResponse(json.dumps({
+            'status': 'success',
+            'data': data
+        }), content_type='application/json')
+	print data, '2'
+	response['Access-Control-Allow-Origin'] = '*'
+	return response
+	
 
 def get_templates(request):
     data = request.GET
