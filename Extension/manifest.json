@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "White Walkers",
+  "description": "This extension kicks ass basically!",
+  "version": "1.1",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
