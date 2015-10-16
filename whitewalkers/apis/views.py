@@ -28,11 +28,7 @@ def get_questions_panel(request):
                                 'template_type': question.template_type,
                                 'owner_id': question.owner_id,
                                 'profile': question.profile,
-                                'option_1': question.option_1,
-                                'option_2': question.option_2,
-                                'option_3': question.option_3,
-                                'option_4': question.option_4,
-                                'option_5': question.option_5,
+                                'options': question.options
                                 } 
         for question in Questions.objects.filter(owner_id=data['owner_id'])]
     response = HttpResponse(json.dumps(questions_list))
@@ -41,16 +37,13 @@ def get_questions_panel(request):
 @csrf_exempt
 def push_question(request):
     data = request.POST
+    options = data.getlist('options')
     question = Questions(question_id=1+Questions.objects.latest('id').id,
                         question_text=data['question_text'],
                         template_type=data['template_type'],
                         owner_id=data['owner_id'],
                         profile=data['profile'],
-                        option_1=0,#data['options'][0],
-                        option_2=0,#data['options'][1],
-                        option_3=0,#data['options'][2],
-                        option_4=0,#data['options'][3],
-                        option_5=0,#data['options'][4]
+                        options=options
                         )
     question.save()
     response = HttpResponse(json.dumps({
