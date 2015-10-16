@@ -21,8 +21,9 @@ from apis import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^fetch_user_profile$', views.fetch_user_profile, name = 'get_user_profile'),
-    url(r'^get_questions$', views.get_questions, name = 'get_questions'),
-    url(r'^send_questions$', views.send_questions, name = 'send_questions'),
+    url(r'^get_questions_panel$', views.get_questions_panel, name = 'get_questions_panel'),
+    url(r'^get_question_data$', views.get_question_data, name = 'get_question_data'),
     url(r'^get_templates$', views.get_templates, name = 'get_templates'),
-    url(r'^get_response$', views.get_response, name = 'get_response')
+    url(r'^get_response$', views.get_response, name = 'get_response'),
+    url(r'^push_question$', views.push_question, name = 'push_question'),
 ]
