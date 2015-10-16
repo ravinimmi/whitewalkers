@@ -32,7 +32,6 @@ def get_questions_panel(request):
 @csrf_exempt
 def push_question(request):
     data = request.POST
-    options = data.getlist('options')
     try:
         question_id = 1+Questions.objects.latest('id').id
     except:
@@ -42,7 +41,7 @@ def push_question(request):
                         template_type=data['template_type'],
                         owner_id=data['owner_id'],
                         profile=data['profile'],
-                        options=options
+                        options=data.getlist('options')
                         )
     question.save()
     response = HttpResponse(json.dumps({
