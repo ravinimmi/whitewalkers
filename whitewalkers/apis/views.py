@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import json
+from apis.models import Questions, User, Response
 
 from .models import Questions, User, Response
 
@@ -33,7 +34,11 @@ def get_questions_panel(request):
 def push_question(request):
     data = request.POST
     options = data.getlist('options')
-    question = Questions(question_id=1+Questions.objects.latest('id').id,
+    try:
+    	question_id = 1+Questions.objects.latest('id').id
+    except:
+    	question_id = 1
+    question = Questions(question_id=question_id,
                         question_text=data['question_text'],
                         template_type=data['template_type'],
                         owner_id=data['owner_id'],
@@ -42,9 +47,9 @@ def push_question(request):
                         )
     question.save()
     response = HttpResponse(json.dumps({
-            'status': 'success',
-            'data': data
-        }), content_type='application/json')
+            				'status': 'success',
+				            'data': data}),
+				             content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
@@ -57,40 +62,41 @@ def fetch_user_profile(request):
     user = User(user_id=user_id, gender=gender, age=age)
     user.save()
     response = HttpResponse(json.dumps({
-            'status': 'success',
-            'data': data
-        }), content_type='application/json')
+                           'status': 'success',
+            				'data': data}),
+        					 content_type='application/json')
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
 
-# def get_questions(request):
-#     data = request.GET
-#     uid = data['email_id']
-#     #questions = mongo_query(age, gender)
-#     questions = [{'question': 'GOT rocks?',
-#         'template_id': 4,
-#         'options': ['agree', 'disagree'],
-#         'question_id': 10},
-#         {'question': 'Friends rocks?',
-#         'template_id': 4,
-#         'options': ['agree', 'disagree'],
-#         'question_id': 11},
-#         {'question': 'Seinfeld rocks?',
-#         'template_id': 4,
-#         'options': ['agree', 'disagree'],
-#         'question_id': 12},
-#         {'question': 'House of cards rocks?',
-#         'template_id': 4,
-#         'options': ['agree', 'disagree'],
-#         'question_id': 13},
-#         {'question': 'Deathnote rocks?',
-#         'template_id': 4,
-#         'options': ['agree', 'disagree'],
-#         'question_id': 14}
-#     ]
-#     response = HttpResponse(json.dumps(questions))
-#     return response
+def get_questions_extension(request):
+	data = request.GET
+	uid = data['email_id']
+	
+	questions = [{'question': 'GOT rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 10},
+		{'question': 'Friends rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 11},
+		{'question': 'Seinfeld rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 12},
+		{'question': 'House of cards rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 13},
+		{'question': 'Deathnote rocks?',
+		'template_id': 4,
+		'options': ['agree', 'disagree'],
+		'question_id': 14}
+	]
+	response = HttpResponse(json.dumps(questions))
+	return response
+
 
 @csrf_exempt
 def get_response(request):
@@ -104,8 +110,7 @@ def get_response(request):
         }), content_type='application/json')
     print data, '2'
     response['Access-Control-Allow-Origin'] = '*'
-    return response
-    
+    return response    
 
 def get_templates(request):
     data = request.GET
