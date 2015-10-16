@@ -21,4 +21,3 @@ class User(models.Model):
 class Response(models.Model):
     question_id = models.TextField()
     options = models.TextField()
-    # options = ArrayField(models.TextField(), size=5, default=[])

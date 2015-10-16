@@ -1,11 +1,14 @@
 
 # Create your views here.
+import config
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import json
 from apis.models import Questions, User, Response
-
+import requests
+from .models import Questions, User, Response
+from django.core import serializers
 
 def get_question_data(request):
     data = request.GET
@@ -57,9 +60,11 @@ def push_question(request):
 @csrf_exempt
 def fetch_user_profile(request):
     data = request.POST
-    user_id = data['user_id']
-    gender = data['gender']
-    age = data['age']
+    # import ipdb
+    # ipdb.set_trace()
+    user_id = data.get('user_id', None)
+    gender = data.get('gender', None)
+    age = data.get('age', None)
     user = User(user_id=user_id, gender=gender, age=age)
     user.save()
     response = HttpResponse(json.dumps({
@@ -69,6 +74,39 @@ def fetch_user_profile(request):
     response['Access-Control-Allow-Origin'] = '*'
     return response
 
+def get_user_profile(request):
+    data = request.GET
+    user_id = data.get('user_id', None)
+    user = User.objects.get(user_id = user_id)
+    profile = {'age': str(user.age), 'gender': str(user.gender)}
+    response = HttpResponse(json.dumps(profile))
+    return response
+
+def match_profile(profile, question_profile):
+    for filters in question_profile:
+        if filters == 'age':
+            if int(profile[filters]) not in range(int(question_profile[filters]['min']), 
+                int(question_profile[filters]['max'])):
+                return False
+        elif question_profile[filters] != profile[filters]:
+            return False
+    return True
+
+def get_questions_extension(request):
+    data = request.GET
+    user_id = data.get('user_id', None)
+    base_url = config.server_url+'/get_user_profile'
+    profile = requests.get(base_url, params = {'user_id': str(user_id)}).json()
+    question_list = Questions.objects.all()
+    suggested_questions  = []
+    # import ipdb
+    # ipdb.set_trace()
+    for question in question_list:
+        question = json.loads(serializers.serialize('json', [ question, ]))[0]
+        if match_profile(profile, json.loads(question['fields'].get('profile', None))):
+            suggested_questions.append(question)
+    response = HttpResponse(json.dumps(suggested_questions))
+    return response
 
 @csrf_exempt
 def send_response(request):
