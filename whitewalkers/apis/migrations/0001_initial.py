@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+import django.contrib.postgres.fields
 
 
 class Migration(migrations.Migration):
@@ -11,26 +12,35 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='QuestionAndUser',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('question_id', models.TextField()),
+                ('user_id', models.TextField()),
+            ],
+        ),
+        migrations.CreateModel(
             name='Questions',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('question_id', models.TextField()),
+                ('question_text', models.TextField()),
                 ('template_type', models.TextField()),
                 ('owner_id', models.TextField()),
                 ('profile', models.TextField()),
-                ('option_1', models.TextField()),
-                ('option_2', models.TextField()),
-                ('option_3', models.TextField()),
-                ('option_4', models.TextField()),
-                ('option_5', models.TextField()),
+                ('options', django.contrib.postgres.fields.ArrayField(default=[], base_field=models.TextField(), size=5)),
+                ('flag', models.TextField(default=None)),
+                ('target', models.TextField(default=None)),
+                ('p', models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='Template',
+            name='Response',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('template_id', models.TextField()),
-                ('template_type', models.TextField()),
+                ('question_id', models.TextField()),
+                ('options', models.TextField()),
+                ('user_id', models.TextField()),
             ],
         ),
         migrations.CreateModel(
@@ -38,7 +48,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('user_id', models.TextField()),
-                ('profile', models.TextField()),
+                ('age', models.TextField()),
+                ('gender', models.TextField()),
+                ('profession_type', models.TextField(default=None)),
+                ('interests', models.TextField(default=None)),
+                ('education', models.TextField(default=None)),
             ],
         ),
     ]

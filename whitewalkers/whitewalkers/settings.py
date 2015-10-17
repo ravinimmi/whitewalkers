@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'whitewalkers.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mydb',
+        'NAME': 'abc',
         'USER': 'postgres',
         'PASSWORD': 'housing',
         'HOST': 'localhost'
