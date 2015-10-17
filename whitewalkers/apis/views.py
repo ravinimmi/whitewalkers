@@ -1,5 +1,3 @@
-
-# Create your views here.
 import config
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -60,8 +58,6 @@ def push_question(request):
 @csrf_exempt
 def fetch_user_profile(request):
     data = request.POST
-    # import ipdb
-    # ipdb.set_trace()
     user_id = data.get('user_id', None)
     gender = data.get('gender', None)
     age = data.get('age', None)
@@ -85,7 +81,7 @@ def get_user_profile(request):
 def match_profile(profile, question_profile):
     for filters in question_profile:
         if filters == 'age':
-            if int(profile[filters]) not in range(int(question_profile[filters]['min']), 
+            if int(profile[filters]) not in range(int(question_profile[filters]['min']),
                 int(question_profile[filters]['max'])):
                 return False
         elif question_profile[filters] != profile[filters]:
@@ -99,8 +95,6 @@ def get_questions_extension(request):
     profile = requests.get(base_url, params = {'user_id': str(user_id)}).json()
     question_list = Questions.objects.all()
     suggested_questions  = []
-    # import ipdb
-    # ipdb.set_trace()
     for question in question_list:
         question = json.loads(serializers.serialize('json', [ question, ]))[0]
         if match_profile(profile, json.loads(question['fields'].get('profile', None))):
