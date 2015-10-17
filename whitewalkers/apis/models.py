@@ -10,8 +10,8 @@ class Questions(models.Model):
     profile = models.TextField()
     options = ArrayField(models.TextField(), size=5, default=[])
     #should we make it text field
-    flag = models.TextField()
-    target = models.TextField()
+    flag = models.TextField(default='abc')
+    target = models.TextField(default=None)
 
 
 class User(models.Model):
