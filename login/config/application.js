@@ -1,3 +1,3 @@
 module.exports = {
-  'api_base_url' : 'http://10.1.11.3:8090/'
+  'api_base_url' : 'http://ravin.housing.com:8000/'
 }
