@@ -1,0 +1,14 @@
+.main-header,
+#create-survey .mdl-layout__tab-bar {
+  height: 48px;
+  min-height: 48px;
+}
+.logo {
+  pointer-events: none;
+}
+#create-survey .mdl-layout__tab-bar {
+  background-color: transparent;
+}
+#create-survey .mdl-layout__tab {
+  color: #000;
+}

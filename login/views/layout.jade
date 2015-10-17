@@ -1,0 +1,43 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='description', content='A front-end template that helps you build fast, modern mobile web apps.')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Survey+
+    link(rel='shortcut icon', href='images/favicon.png')
+    link(href='https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&lang=en', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+    link(rel='stylesheet', href='stylesheets/material.min.css')
+    link(rel='stylesheet', href='stylesheets/style.css')
+  body.mdl-demo.mdl-color--grey-100.mdl-color-text--grey-700.mdl-base
+    html
+  body
+    // Simple header with scrollable tabs.
+    .mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+      header.mdl-layout__header.main-header
+        .mdl-layout__tab-bar.mdl-js-ripple-effect
+          a.mdl-layout__tab.logo(href='#create-survey') Survey+
+          a.mdl-layout__tab.is-active(href='#create-survey') Create Survey
+          a.mdl-layout__tab(href='#see-reports') See Reports
+          a.mdl-layout__tab(href='#existing-survey') Exixting Surveys
+      main.mdl-layout__content
+        section#create-survey.mdl-layout__tab-panel.is-active
+          .page-content
+              .mdl-grid.mdl-cell.mdl-cell--12-col
+                .mdl-cell.mdl-cell--3-col.mdl-grid.mdl-grid--no-spacing
+                .mdl-cell.mdl-cell--6-col.mdl-grid.mdl-grid--no-spacing
+                  .mdl-layout__tab-bar.mdl-js-ripple-effect
+                    a.mdl-layout__tab.ajax-link.is-active(href='/panel/frame-questions', data-container="#frame-question") Frame Questions
+                    a.mdl-layout__tab.ajax-link(href='/panel/choose-users', data-container="#frame-question") Choose Users
+                    a.mdl-layout__tab.ajax-link(href='/panel/pay-n-roll', data-container="#frame-question") Pay and roll
+                  .mdl-layout__content
+                    #frame-question
+                .mdl-cell.mdl-cell--3-col.mdl-grid.mdl-grid--no-spacing
+
+    script(src='https://code.jquery.com/jquery-2.1.4.min.js')
+    script(src='javascripts/material.min.js')
+    script(src='javascripts/main.js')
+
+
