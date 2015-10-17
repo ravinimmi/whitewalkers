@@ -14,19 +14,7 @@ function extractDomain(url) {
 
     return domain;
 }
-chrome.tabs.query({ active: true, currentWindow: true },function(tabs){
-    console.log(tabs);
-    var a = 1;
-    /*setInterval(function(){
-        updateStuff(tabs[0].id, a);
-        a = a+1;
-    },3000);*/
-    updateStuff(tabs[0].id, a);
-    });
 
-function updateStuff(tabId, a){
-    chrome.browserAction.setBadgeText({tabId: tabId, text: a.toString()});
-}
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
     chrome.tabs.query({ active: true, currentWindow: true },function(tabs){
         if(tabs[0].id === tabId){
