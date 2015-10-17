@@ -1,11 +1,12 @@
 $(function() {
     var chosenQuestion = 0;
+    var stepSize = 0;
     var d = localStorage.getItem("test");
     var profile =  (d !== null) ? JSON.parse(d) : null;
 
     //var qlist = [{"question_id": 5, "question": "DeathNote rocks", "template_id": 4, "template_type": "image", "options": ["http://i.imgur.com/21AtcQH.png", "http://i.imgur.com/us9lq8G.jpg"]},{"question_id": 10, "question": "GOT rocks?", "template_id": 4, "template_type": "single", "options": ["agree", "disagree"]}];
-    var qlist = [{"question_id": 1, "question": "DeathNote rocks", "template_id": 4, "template_type": "single", "options": ["agree", "disagree"]},{"question_id": 2, "question": "GOT rocks?", "template_id": 4, "template_type": "single", "options": ["agree", "disagree"]}];
-
+    //var qlist = [{"question_id": 1, "question": "DeathNote rocks", "template_id": 4, "template_type": "single", "options": ["agree", "disagree"]},{"question_id": 2, "question": "GOT rocks?", "template_id": 4, "template_type": "single", "options": ["agree", "disagree"]}];
+    var qlist = [];
   
   if(profile === null)
   { 
@@ -23,26 +24,33 @@ $(function() {
   else
     {
       $("#couponProgress").show();
-      parseQuestions(qlist,chosenQuestion);
+      $.ajax({
+      url: "http://ravin.housing.com:8000/get_questions_extension?user_id="+profile.email
+      }).done(function(data) {
+        qlist = JSON.parse(data);
+        console.log(data);
+        console.log(qlist);
+        stepSize = Math.ceil(100/qlist.length);
+        parseQuestions(qlist,chosenQuestion);
+      });
     }
   }
    /* $.ajax({
-      url: "http://10.1.11.3:8090/get_questions?email_id="+profile.email
+      url: "http://ravin.housing.com:8000/get_questions?email_id="+profile.email
     }).done(function(data) {
         qlist = JSON.parse(data);
         parseQuestions(qlist,chosenQuestion);
     });*/
-  var stepSize = Math.ceil(100/qlist.length);
   console.log(stepSize);
   function renderOptions(options,qtype){
     var str= "";
       options.forEach(function(op){
-        if(qtype === "single"){
+        if(qtype !== "image" ){
           str+= '<label class="mdl-radio" for="'+op+'">';
           str+= '<input type="radio" class="mdl-radio__button" name="options" value="'+op+'"/>';
           str+= '<span class="mdl-radio__label">'+op+'</span></label>';
         }
-        else if(qtype === "image"){
+        else {
           str+= '<div class="qimages"><img class="crop" src="'+op+'"/>';
           str+= '<input type="radio" class="mdl-radio__button" name="options" value=""/></div>';
         }
@@ -57,9 +65,7 @@ $(function() {
         $("#question").html("");
         var str = "";
         var q = qlist[qId];
-        //console.log(typeof qlist);
-        //console.log(qlist[qId]);
-        str += "<p>"+q.question+"</p>";
+        str += "<p>"+q.question_text+"</p>";
         str += renderOptions(q.options,q.template_type);
         /*q.options.forEach(function(op){
           str+= '<label class="mdl-radio" for="'+op+'">';
@@ -98,7 +104,7 @@ $(function() {
       console.log(data);
       $.ajax({
         method: "POST",
-        url: "http://10.1.11.3:8090/send_response",
+        url: "http://ravin.housing.com:8000/send_response",
         data: data
       })
        .done(function( msg ) {
