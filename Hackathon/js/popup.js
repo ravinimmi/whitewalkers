@@ -11,7 +11,8 @@ $(function() {
   { 
     //show login screen and stuff
     $("#question").html("");
-    $("#question").append('<a target="_blank" href="http://devendravm.housing.com:3000/auth/facebook/"><img src="http://i.stack.imgur.com/ryt6L.png"></a>');
+    $("#question").append('<p>Get rewarded everytime you submit a survey!</p>');
+    $("#question").append('<a target="_blank" href="http://devendravm.housing.com:3000/auth/facebook/"><img src="img/facebook_login.png"></a>');
     $("#couponProgress").hide();
   }
   else{
