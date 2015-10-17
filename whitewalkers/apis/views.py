@@ -9,6 +9,7 @@ from apis.models import Questions, User, Response
 import requests
 from .models import Questions, User, Response
 from django.core import serializers
+from datetime import date
 
 def get_question_data(request):
     data = request.GET
@@ -18,6 +19,9 @@ def get_question_data(request):
     response = HttpResponse(json.dumps(response))
     return response
 
+def calculate_age(born):
+	today = date.today()
+	return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 def get_questions_panel(request):
     data = request.GET
@@ -60,11 +64,16 @@ def push_question(request):
 @csrf_exempt
 def fetch_user_profile(request):
     data = request.POST
-    # import ipdb
-    # ipdb.set_trace()
+    import ipdb
+    ipdb.set_trace()
     user_id = data.get('user_id', None)
     gender = data.get('gender', None)
-    age = data.get('age', None)
+    try:
+    	birthday_str = data.get('birthday', None)
+    	birthday = datetime.datetime.strptime(birthday, '%m/%d/%Y').date()
+    	age = calculate_age(birthday)
+    except:
+    	age = 25
     user = User(user_id=user_id, gender=gender, age=age)
     user.save()
     response = HttpResponse(json.dumps({
