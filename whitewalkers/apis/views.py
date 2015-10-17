@@ -8,6 +8,7 @@ import requests
 from .models import Questions, User, Response, QuestionAndUser
 from django.core import serializers
 from datetime import date
+import datetime
 
 def get_question_data(request):
     data = request.GET
@@ -64,13 +65,13 @@ def push_question(request):
     return response
 
 @csrf_exempt
-def fetch_user_profile(request):
+def push_user_profile(request):
     data = request.POST
     user_id = data.get('user_id', None)
     gender = data.get('gender', None)
     try:
         birthday_str = data.get('birthday', None)
-        birthday = datetime.datetime.strptime(birthday, '%m/%d/%Y').date()
+        birthday = datetime.datetime.strptime(birthday_str, '%m/%d/%Y').date()
         age = calculate_age(birthday)
     except:
         age = 25

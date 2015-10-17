@@ -18,17 +18,17 @@ class User(models.Model):
     user_id = models.TextField()
     age = models.TextField()
     gender = models.TextField()
-    profession_type = models.TextField(default = None)
-    interests = models.TextField(default = None)
-    education  = models.TextField(default = None)
+    profession_type = models.TextField(default = 'NA')
+    interests = models.TextField(default = 'NA')
+    education  = models.TextField(default = 'NA')
     # questions_asked = ArrayField(models.TextField(), size=5, default=[])
 
 
 class Response(models.Model):
     question_id = models.TextField()
     options = models.TextField()
-    user_id = models.TextField()
+    user_id = models.TextField(default='abc@xyz.com')
 
 class QuestionAndUser(models.Model):
     question_id = models.TextField()
-    user_id = models.TextField()
+    user_id = models.TextField(default='abc@xyz.com')
