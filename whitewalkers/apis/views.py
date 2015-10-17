@@ -8,6 +8,7 @@ import requests
 from .models import Questions, User, Response, QuestionAndUser
 from django.core import serializers
 from datetime import date
+import datetime
 
 def get_question_data(request):
     data = request.GET
@@ -64,17 +65,24 @@ def push_question(request):
     return response
 
 @csrf_exempt
-def fetch_user_profile(request):
+def push_user_profile(request):
     data = request.POST
     user_id = data.get('user_id', None)
     gender = data.get('gender', None)
     try:
         birthday_str = data.get('birthday', None)
-        birthday = datetime.datetime.strptime(birthday, '%m/%d/%Y').date()
+        birthday = datetime.datetime.strptime(birthday_str, '%m/%d/%Y').date()
         age = calculate_age(birthday)
     except:
         age = 25
-    user = User(user_id=user_id, gender=gender, age=age)
+
+    user = User.objects.all().filter(user_id=user_id)
+    if user.exists():
+        user = user[0]
+        user.gender = gender
+        user.age = age
+    else:
+        user = User(user_id=user_id, gender=gender, age=age)
     user.save()
     response = HttpResponse(json.dumps({
                            'status': 'success',
@@ -110,11 +118,11 @@ def get_questions_extension(request):
     suggested_questions  = []
     for question in question_list:
         question = json.loads(serializers.serialize('json', [ question, ]))[0]
-        if QuestionAndUser.objects.filter(question_id = question['question_id'], user_id = user_id).exists():
+        if QuestionAndUser.objects.filter(question_id = question['fields']['question_id'], user_id = user_id).exists():
             continue
         elif match_profile(profile, json.loads(question['fields'].get('profile', None))):
             suggested_questions.append(question)
-            q_user = QuestionAndUser(question_id = question['question_id'], user_id = user_id)
+            q_user = QuestionAndUser(question_id = question['fields']['question_id'], user_id = user_id)
             q_user.save()
     response = HttpResponse(json.dumps(suggested_questions))
     return response
@@ -129,37 +137,26 @@ def get_profile_key(question_id):
 def send_response(request):
     data = request.POST
     options_selected = data.getlist('options')
+    # import ipdb
+    # ipdb.set_trace()
+    response = Response.objects.filter(question_id=str(data['question_id']))[0]
+    response_options = json.loads(response.options)
+    for option in options_selected:
+        response_options[option] = response_options[option]+1
+    response.options = json.dumps(response_options)
+    response.save()
 
-    # try:
-    #   response = Response.objects.filter(question_id=data['question_id'])[0]
-    # except ProgrammingError:
-    #   response = Response(question_id=data['question_id'], options=json.dumps(options_selected))
-
-    if Response.objects.filter(question_id=data['question_id']).exists():
-        response = Response.objects.filter(question_id=data['question_id'])[0]
-        response_options = json.loads(response.options)
-        for option in options_selected:
-            if option not in response_options:
-                response_options[option] = 1
-            else:
-                response_options[option] = int(response_options[option])+1
-    else:
-        options_list = []
-        for option in options_selected:
-            options_list.append({option: 1})
-        response = Response(question_id=data['question_id'], options=options_list,
-            user_id = data['user_id'])      
-
-    if Questions.objects.filter(question_id = data['question_id']).flag == 'user_profile':
-        profile_key = get_profile_key(data['question_id'])
+    if Questions.objects.filter(question_id = str(data['question_id']))[0].flag == 'user_profile':
+        profile_key = get_profile_key(str(data['question_id']))
         if profile_key is not 'no_key':
             value = data['profile_key']
+            user = User.objects.filter(user_id= str(data['user_id']))
             if profile_key == 'profession_type':
-                User.objects.filter(data['user_id']).update(profession_type = value)
+                user.profession_type = value
             if profile_key == 'interests':
-                User.objects.filter(data['user_id']).update(interests = value)
+                user.interests = value
             if profile_key == 'education':
-                User.objects.filter(data['user_id']).update(education = value)
+                user.education = value
 
     return_data = HttpResponse(json.dumps({
             'status': 'success',

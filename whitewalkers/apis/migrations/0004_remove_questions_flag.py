@@ -7,13 +7,12 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apis', '0006_auto_20151016_2127'),
+        ('apis', '0003_questions_flag'),
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='response',
-            name='options',
-            field=models.TextField(),
+        migrations.RemoveField(
+            model_name='questions',
+            name='flag',
         ),
     ]
