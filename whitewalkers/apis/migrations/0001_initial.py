@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('question_id', models.TextField()),
-                ('user_id', models.TextField()),
+                ('user_id', models.TextField(default=b'NA')),
             ],
         ),
         migrations.CreateModel(
@@ -29,9 +29,8 @@ class Migration(migrations.Migration):
                 ('owner_id', models.TextField()),
                 ('profile', models.TextField()),
                 ('options', django.contrib.postgres.fields.ArrayField(default=[], base_field=models.TextField(), size=5)),
-                ('flag', models.TextField(default=None)),
-                ('target', models.TextField(default=None)),
-                ('p', models.TextField()),
+                ('flag', models.TextField(default=b'NA')),
+                ('target', models.TextField(default=b'NA')),
             ],
         ),
         migrations.CreateModel(
@@ -40,7 +39,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('question_id', models.TextField()),
                 ('options', models.TextField()),
-                ('user_id', models.TextField()),
+                ('user_id', models.TextField(default=b'NA')),
             ],
         ),
         migrations.CreateModel(
@@ -50,9 +49,9 @@ class Migration(migrations.Migration):
                 ('user_id', models.TextField()),
                 ('age', models.TextField()),
                 ('gender', models.TextField()),
-                ('profession_type', models.TextField(default=None)),
-                ('interests', models.TextField(default=None)),
-                ('education', models.TextField(default=None)),
+                ('profession_type', models.TextField(default=b'NA')),
+                ('interests', models.TextField(default=b'NA')),
+                ('education', models.TextField(default=b'NA')),
             ],
         ),
     ]

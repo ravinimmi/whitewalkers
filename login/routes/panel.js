@@ -18,6 +18,20 @@ router.get('/pay-n-roll', function(req, res, next) {
   res.render('panel/pay_n_roll', { layout: false });
 });
 
+router.get('/templates', function(req, res, next) {
+  res.render('panel/templates', { layout: false });
+});
+
+router.get('/template', function(req, res, next) {
+	if(req.params.choice == 'single_choice')
+		res.render('panel/single_choice', { layout: false });
+	else if(req.params.choice == 'multiple_choice')
+		res.render('panel/multiple_choice', { layout: false });
+	else if(req.params.choice == 'image_choice')
+		res.render('panel/image_choice', { layout: false });
+  else if(req.params.choice == 'rating_choice')
+    res.render('panel/rating_choice', { layout: false });
+});
 router.get('/reports', function(req, res, next) {
   res.render('panel/reports', { layout: false });
 });

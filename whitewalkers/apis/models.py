@@ -9,9 +9,8 @@ class Questions(models.Model):
     owner_id = models.TextField()
     profile = models.TextField()
     options = ArrayField(models.TextField(), size=5, default=[])
-    #should we make it text field
-    flag = models.TextField(default='abc')
-    target = models.TextField(default=None)
+    flag = models.TextField(default='NA')
+    target = models.TextField(default='NA')
 
 
 class User(models.Model):
@@ -21,14 +20,13 @@ class User(models.Model):
     profession_type = models.TextField(default = 'NA')
     interests = models.TextField(default = 'NA')
     education  = models.TextField(default = 'NA')
-    # questions_asked = ArrayField(models.TextField(), size=5, default=[])
 
 
 class Response(models.Model):
     question_id = models.TextField()
     options = models.TextField()
-    user_id = models.TextField(default='abc@xyz.com')
+    user_id = models.TextField(default='NA')
 
 class QuestionAndUser(models.Model):
     question_id = models.TextField()
-    user_id = models.TextField(default='abc@xyz.com')
+    user_id = models.TextField(default='NA')

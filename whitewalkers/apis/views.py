@@ -67,7 +67,7 @@ def push_question(request):
 @csrf_exempt
 def push_user_profile(request):
     data = request.POST
-    user_id = data.get('user_id', None)
+    user_id = data.get('email', None)
     gender = data.get('gender', None)
     try:
         birthday_str = data.get('birthday', None)
@@ -137,8 +137,6 @@ def get_profile_key(question_id):
 def send_response(request):
     data = request.POST
     options_selected = data.getlist('options')
-    # import ipdb
-    # ipdb.set_trace()
     response = Response.objects.filter(question_id=str(data['question_id']))[0]
     response_options = json.loads(response.options)
     for option in options_selected:
@@ -164,7 +162,3 @@ def send_response(request):
         }), content_type='application/json')
     return_data['Access-Control-Allow-Origin'] = '*'
     return return_data
-
-#TODO
-#get_template_api
-#get_response_api
