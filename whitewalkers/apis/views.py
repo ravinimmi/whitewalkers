@@ -67,7 +67,7 @@ def push_question(request):
 @csrf_exempt
 def push_user_profile(request):
     data = request.POST
-    user_id = data.get('user_id', None)
+    user_id = data.get('email', None)
     gender = data.get('gender', None)
     try:
         birthday_str = data.get('birthday', None)
@@ -117,12 +117,15 @@ def get_questions_extension(request):
     question_list = Questions.objects.all()
     suggested_questions  = []
     for question in question_list:
-        question = json.loads(serializers.serialize('json', [ question, ]))[0]
-        if QuestionAndUser.objects.filter(question_id = question['fields']['question_id'], user_id = user_id).exists():
+        if QuestionAndUser.objects.filter(question_id = question.question_id, user_id = user_id).exists():
             continue
-        elif match_profile(profile, json.loads(question['fields'].get('profile', None))):
-            suggested_questions.append(question)
-            q_user = QuestionAndUser(question_id = question['fields']['question_id'], user_id = user_id)
+        elif match_profile(profile, json.loads(question.profile)):
+            suggested_questions.append({'question_text': question.question_text,
+                                        'question_id': question.question_id,
+                                        'options': question.options,
+                                        'template_type': question.template_type,
+                                        })
+            q_user = QuestionAndUser(question_id = question.question_id, user_id = user_id)
             q_user.save()
     response = HttpResponse(json.dumps(suggested_questions))
     return response
@@ -137,8 +140,6 @@ def get_profile_key(question_id):
 def send_response(request):
     data = request.POST
     options_selected = data.getlist('options')
-    # import ipdb
-    # ipdb.set_trace()
     response = Response.objects.filter(question_id=str(data['question_id']))[0]
     response_options = json.loads(response.options)
     for option in options_selected:
@@ -164,7 +165,3 @@ def send_response(request):
         }), content_type='application/json')
     return_data['Access-Control-Allow-Origin'] = '*'
     return return_data
-
-#TODO
-#get_template_api
-#get_response_api

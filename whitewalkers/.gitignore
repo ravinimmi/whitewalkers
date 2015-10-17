@@ -1,2 +1,5 @@
 *.pyc
+
+feeder.py
+apis/feeder.py
 cleanup.sh
