@@ -1,0 +1,39 @@
+script(src="/javascript/templates")
+style.
+	.demo-card-image.mdl-card {
+	background-size: cover;
+	background-repeat: no-repeat;
+	width: 255px;
+	height: 150px;
+	margin-bottom: 15px;
+	min-height:0px;
+	}
+	.demo-card-image.mdl-card.is-acive{
+		 border: 2px solid #4A1F1F;
+	}
+	.demo-card-image > .mdl-card__actions {
+	height: 52px;
+	padding: 16px;
+	background: rgba(0, 0, 0, 0.2);
+	}
+	.demo-card-image__filename {
+	color: #fff;
+	font-size: 14px;
+	font-weight: 500;
+	}
+	.single-choice{
+	background: url('/images/single_choice.png');
+	}
+	.multiple-choice{
+	background: url('/images/multiple_choice.png');
+	}
+	.image-choice{
+	background: url('/images/select_image.png');
+	}
+	.rating-choice{
+	background: url('/images/rating_scale.png');
+	}
+a.demo-card-image.mdl-card.mdl-shadow--2dp.single-choice.is-acive.ajax-link(data-type="single-choice")
+a.demo-card-image.mdl-card.mdl-shadow--2dp.multiple-choice.ajax-link(data-type="multiple-choice")
+a.demo-card-image.mdl-card.mdl-shadow--2dp.image-choice.ajax-link(data-type="image-choice")
+a.demo-card-image.mdl-card.mdl-shadow--2dp.rating-choice.ajax-link(data-type="rating-choice")
