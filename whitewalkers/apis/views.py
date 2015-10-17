@@ -75,7 +75,14 @@ def push_user_profile(request):
         age = calculate_age(birthday)
     except:
         age = 25
-    user = User(user_id=user_id, gender=gender, age=age)
+
+    user = User.objects.all().filter(user_id=user_id)
+    if user.exists():
+        user = user[0]
+        user.gender = gender
+        user.age = age
+    else:
+        user = User(user_id=user_id, gender=gender, age=age)
     user.save()
     response = HttpResponse(json.dumps({
                            'status': 'success',
