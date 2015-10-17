@@ -18,10 +18,10 @@ html(lang='en')
     .mdl-layout.mdl-js-layout.mdl-layout--fixed-header
       header.mdl-layout__header.main-header
         .mdl-layout__tab-bar.mdl-js-ripple-effect
-          a.mdl-layout__tab.logo(href='#create-survey') Survey+
-          a.mdl-layout__tab.is-active(href='#create-survey') Create Survey
-          a.mdl-layout__tab(href='#see-reports') See Reports
-          a.mdl-layout__tab(href='#existing-survey') Exixting Surveys
+          a.mdl-layout__tab.logo.ajax-link(href='/panel/create-survey', data-container="#create-survey") Survey+
+          a.mdl-layout__tab.is-active(href='/panel/create-survey', data-container="#create-survey") Create Survey
+          a.mdl-layout__tab.ajax-link(href='/panel/reports', data-container="#create-survey") See Reports
+          a.mdl-layout__tab.ajax-link(href='/panel/surveys', data-container="#create-survey") Existing Surveys
       main.mdl-layout__content
         section#create-survey.mdl-layout__tab-panel.is-active
           .page-content
@@ -38,6 +38,8 @@ html(lang='en')
 
     script(src='https://code.jquery.com/jquery-2.1.4.min.js')
     script(src='javascripts/material.min.js')
+    script(src='http://code.highcharts.com/highcharts.js')
+    script(src='http://code.highcharts.com/modules/exporting.js')
     script(src='javascripts/main.js')
 
 

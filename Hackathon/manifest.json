@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "Survey +",
+  "description": "Targetted Survey management tool",
+  "version": "1.2",
+  "content_security_policy": "script-src 'self' https://storage.googleapis.com https://cdn.socket.io; object-src 'self'",
+
+  "background": 
+  {
+    "page":"background.html"
+  },
+  "browser_action": {
+    "default_icon": {
+        "19": "disabled_16x16.png",
+        "38": "disabled_48x48.png"
+      },
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "http://*.facebook.com/*"
+  ]
+}

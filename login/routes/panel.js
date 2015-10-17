@@ -18,4 +18,8 @@ router.get('/pay-n-roll', function(req, res, next) {
   res.render('panel/pay_n_roll', { layout: false });
 });
 
+router.get('/reports', function(req, res, next) {
+  res.render('panel/reports', { layout: false });
+});
+
 module.exports = router;

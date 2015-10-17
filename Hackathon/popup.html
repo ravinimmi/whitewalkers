@@ -1,0 +1,58 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.cyan-blue.min.css" />
+    <link rel="stylesheet" href="css/style.css"/>
+<script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+    <script src="js/jquery-min.js"></script>
+    <script src="js/popup.js"></script>
+
+  </head>
+  <body>
+ <!--  <p><a target="_blank" href="https://www.facebook.com/dialog/oauth?client_id=1659265230957893&response_type=token&scope=email,user_education_history,user_birthday&redirect_uri=
+http://devendravm.housing.com:3000/auth/facebook/callback">Facebook Connect</a></p>
+  <p><a target="_blank" href="https://accounts.google.com/AccountChooser?continue=https://accounts.google.com/o/oauth2/auth?access_type=offline&approval_prompt=force&scope=https://www.googleapis.com/auth/plus.login+https://www.googleapis.com/auth/plus.me&response_type=code&redirect_uri=http://localhost:3000/connect/&client_id=791478099215-nlc92i01idum8r44na3rbdk8vp11sm9l.apps.googleusercontent.com">Google plus connect</a></p>
+  <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button> -->
+<!-- Simple header with scrollable tabs. -->
+<!-- Always shows a header, even in smaller screens. -->
+<div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">Survey +</span>
+      <img id="profileImage" src="img/gravatar.png"/>
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+      <!-- Navigation. We hide it in small screens. -->
+      <nav class="mdl-navigation mdl-layout--large-screen-only">
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+      </nav>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span id="status" class="mdl-layout-title">Log in</span>
+  </div>
+  <main class="mdl-layout__content">
+    <div id="question" class="page-content"><!-- Your content goes here --></div>
+  </main>
+  <div id="couponProgress">
+  <div id="p1" class="mdl-progress mdl-js-progress"></div>
+  <span id="qno"></span>
+  </div>
+</div>
+</body>
+</html>
+
