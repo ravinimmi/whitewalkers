@@ -1,1 +1,38 @@
-H1 Choose Users
+script(src='/javascripts/test.js')
+div#user-form
+	div
+		p Select Users for these questions
+		hr
+	div
+		p Gender
+		label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect(for='male')	 
+			input#male.mdl-checkbox__input(type='checkbox' value="male")  
+			span.mdl-checkbox__label Male
+		label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect(for='female')  
+			input#female.mdl-checkbox__input(type='checkbox' value="female")  
+			span.mdl-checkbox__label Female
+	br
+	div
+		p Age
+		label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='age')  
+			input#age-any.mdl-radio__button(type='radio', name='age', value='2')  
+			span.mdl-radio__label Any Age
+		label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='age')  
+			input#age-range.mdl-radio__button(type='radio', name='age', value='2')  
+			span.mdl-radio__label Select a range
+	br
+	div
+		p Choose Number of Users
+		hr
+		label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='users')  
+			input#unlimited-users.mdl-radio__button(type='radio', name='users', value='2')  
+			span.mdl-radio__label Unlimited
+		label.mdl-radio.mdl-js-radio.mdl-js-ripple-effect(for='users')  
+			input#users-fixed.mdl-radio__button(type='radio', name='users', value='2')  
+			span.mdl-radio__label Fixed Number
+	br
+	hr
+	label.mdl-checkbox.mdl-js-checkbox.mdl-js-ripple-effect(for='apply-all')  
+		input#aplly-all.mdl-checkbox__input(type='checkbox')  
+		span.mdl-checkbox__label Apply these settings to all questions
+	button#done.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect Done
